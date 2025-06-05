@@ -53,6 +53,7 @@ export default function App() {
               </Box>
             </ScrollView>
           </KeyboardAvoidingView>
+          <ThemeToggleButton />
         </SafeAreaView>
       </GluestackUIProvider>
     </StyledProvider>
