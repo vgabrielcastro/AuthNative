@@ -2,8 +2,8 @@ import {Box, Icon, MoonIcon, Pressable, SunIcon} from '@gluestack-ui/themed';
 import {BlurView} from '@react-native-community/blur';
 import React, {useRef} from 'react';
 import {Animated} from 'react-native';
-import {useAppTheme} from '../theme';
 import {useThemeStore} from '../store/useThemeStore';
+import {useAppTheme} from '../theme';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

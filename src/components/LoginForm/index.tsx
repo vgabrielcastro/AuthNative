@@ -91,7 +91,6 @@ const LoginForm = ({control, errors, onSubmit, isLoading}: LoginFormProps) => {
                 color={theme.colors.text}
                 flex={1}
                 textAlignVertical="center"
-                paddingLeft={0}
                 placeholderTextColor={theme.colors.placeholder}
               />
               <Pressable onPress={() => setShowPassword(v => !v)} padding={14}>
