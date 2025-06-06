@@ -18,29 +18,41 @@ export class AuthError extends Error {
   }
 }
 
+const logInfo = (message: string, data?: any) => {
+  console.log(`ℹ️ ${message}`, data ? data : '');
+};
+
+const logError = (message: string, error?: any) => {
+  console.log(`❌ ${message}`, error ? error : '');
+};
+
+const logSuccess = (message: string) => {
+  console.log(`✅ ${message}`);
+};
+
 export const authService = {
   async login(email: string, password: string): Promise<boolean> {
     try {
-      const response = await api.get<UserData[]>(`/users?email=${email}`);
-      console.log('📡 Resposta da API:', response.data);
-      const user = response.data[0];
+      logInfo('Iniciando processo de login', {email});
 
-      console.log('👤 Usuário encontrado:', user ? 'Sim' : 'Não');
+      const response = await api.get<UserData[]>(`/users?email=${email}`);
+      logInfo('Resposta da API recebida', response.data);
+
+      const user = response.data[0];
+      logInfo('Usuário encontrado', user ? 'Sim' : 'Não');
 
       if (!user) {
-        console.log('❌ Usuário não encontrado');
+        logError('Usuário não encontrado');
         throw new AuthError('Usuário não encontrado');
       }
 
       if (user.password !== password) {
-        console.log('❌ Senha incorreta');
+        logError('Senha incorreta');
         throw new AuthError('Senha incorreta');
       }
 
-      console.log('✅ Login bem sucedido');
-
       const token = `dummy-token-${Date.now()}`;
-      console.log('🔑 Token gerado:', token);
+      logInfo('Token gerado', token);
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {password: _pwd, ...userWithoutPassword} = user;
@@ -51,9 +63,10 @@ export const authService = {
       );
       await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
 
+      logSuccess('Login realizado com sucesso');
       return true;
     } catch (error) {
-      console.log('🚨 Erro durante o login:', error);
+      logError('Erro durante o login', error);
 
       if (error instanceof AuthError) {
         throw error;
@@ -67,19 +80,19 @@ export const authService = {
 
   async logout(): Promise<void> {
     try {
-      console.log('🚪 Iniciando logout');
+      logInfo('Iniciando processo de logout');
       await AsyncStorage.multiRemove([AUTH_TOKEN_KEY, USER_DATA_KEY]);
-      console.log('✅ Logout realizado com sucesso');
+      logSuccess('Logout realizado com sucesso');
     } catch (error) {
-      console.log('🚨 Erro durante o logout:', error);
+      logError('Erro durante o logout', error);
       throw new AuthError('Erro ao fazer logout');
     }
   },
 
   async isAuthenticated(): Promise<boolean> {
     const token = await AsyncStorage.getItem(AUTH_TOKEN_KEY);
-    console.log(
-      '🔍 Verificando autenticação:',
+    logInfo(
+      'Verificando autenticação',
       token ? 'Autenticado' : 'Não autenticado',
     );
     return !!token;
@@ -88,13 +101,10 @@ export const authService = {
   async getUserData(): Promise<Omit<UserData, 'password'> | null> {
     try {
       const userData = await AsyncStorage.getItem(USER_DATA_KEY);
-      console.log(
-        '👤 Dados do usuário:',
-        userData ? 'Encontrados' : 'Não encontrados',
-      );
+      logInfo('Dados do usuário', userData ? 'Encontrados' : 'Não encontrados');
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
-      console.log('🚨 Erro ao obter dados do usuário:', error);
+      logError('Erro ao obter dados do usuário', error);
       return null;
     }
   },
