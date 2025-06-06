@@ -14,14 +14,14 @@ import LoginForm from '../components/LoginForm';
 import {LoginFormData} from '../components/LoginForm/form.interface';
 import {loginSchema} from '../components/LoginForm/schema';
 import ThemeToggleButton from '../components/ThemeToggleButton';
-import {AuthError, authService} from '../services/auth';
+import {AuthError} from '../services/auth';
 import {useAppTheme} from '../theme';
-import HomeScreen from './HomeScreen';
+import {useAuth} from '../contexts/AuthContext';
 
 const LoginScreen = () => {
   const {theme} = useAppTheme();
+  const {signIn} = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const {
     control,
@@ -34,11 +34,8 @@ const LoginScreen = () => {
     setIsLoading(true);
 
     try {
-      const success = await authService.login(data.email, data.password);
-      if (success) {
-        console.log('✅ Login realizado com sucesso');
-        setIsAuthenticated(true);
-      }
+      await signIn(data.email, data.password);
+      console.log('✅ Login realizado com sucesso');
     } catch (error) {
       console.log('❌ Erro no login:', error);
       if (error instanceof AuthError) {
@@ -48,10 +45,6 @@ const LoginScreen = () => {
       setIsLoading(false);
     }
   };
-
-  if (isAuthenticated) {
-    return <HomeScreen />;
-  }
 
   return (
     <SafeAreaView flex={1} backgroundColor={theme.colors.background}>

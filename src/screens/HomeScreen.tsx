@@ -6,34 +6,28 @@ import {
   ScrollView,
   Text,
 } from '@gluestack-ui/themed';
-import {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import MoreInfo from '../components/MoreInfo';
 import ThemeInfo from '../components/ThemeInfo';
 import ThemeToggleButton from '../components/ThemeToggleButton';
-import {AuthError, authService} from '../services/auth';
+import {AuthError} from '../services/auth';
 import {useAppTheme} from '../theme';
-import LoginScreen from './LoginScreen';
+import {useAuth} from '../contexts/AuthContext';
 
 const HomeScreen = () => {
   const {theme} = useAppTheme();
-  const [userName, setUserName] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const {signOut, user} = useAuth();
 
-  useEffect(() => {
-    const loadUserData = async () => {
-      const userData = await authService.getUserData();
-      if (userData) {
-        setUserName(userData.name);
-      }
-    };
-    loadUserData();
-  }, []);
+  const today = new Date().toLocaleDateString('pt-BR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
   const handleLogout = async () => {
     try {
-      await authService.logout();
-      setIsAuthenticated(false);
+      await signOut();
     } catch (error) {
       let errorMessage = 'Erro ao fazer logout. Tente novamente mais tarde.';
 
@@ -44,17 +38,6 @@ const HomeScreen = () => {
       console.log('Logout Error', errorMessage);
     }
   };
-
-  if (!isAuthenticated) {
-    return <LoginScreen />;
-  }
-
-  const today = new Date().toLocaleDateString('pt-BR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
 
   return (
     <SafeAreaView flex={1} backgroundColor={theme.colors.background}>
@@ -78,7 +61,7 @@ const HomeScreen = () => {
                 fontWeight={'bold'}
                 color={theme.colors.text}
                 textAlign={'center'}>
-                Olá {userName} 😊
+                Olá {user?.name} 😊
               </Text>
               <Text
                 fontSize={20}
