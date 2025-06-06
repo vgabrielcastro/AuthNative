@@ -1,17 +1,53 @@
 import {
   Box,
+  Button,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   Text,
 } from '@gluestack-ui/themed';
+import {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import MoreInfo from '../components/MoreInfo';
+import ThemeInfo from '../components/ThemeInfo';
 import ThemeToggleButton from '../components/ThemeToggleButton';
+import {AuthError, authService} from '../services/auth';
 import {useAppTheme} from '../theme';
+import LoginScreen from './LoginScreen';
 
 const HomeScreen = () => {
   const {theme} = useAppTheme();
+  const [userName, setUserName] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const userData = await authService.getUserData();
+      if (userData) {
+        setUserName(userData.name);
+      }
+    };
+    loadUserData();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+      setIsAuthenticated(false);
+    } catch (error) {
+      let errorMessage = 'Erro ao fazer logout. Tente novamente mais tarde.';
+
+      if (error instanceof AuthError) {
+        errorMessage = error.message;
+      }
+
+      console.log('Logout Error', errorMessage);
+    }
+  };
+
+  if (!isAuthenticated) {
+    return <LoginScreen />;
+  }
 
   const today = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',
@@ -42,7 +78,7 @@ const HomeScreen = () => {
                 fontWeight={'bold'}
                 color={theme.colors.text}
                 textAlign={'center'}>
-                Olá usuario teste 😊
+                Olá {userName} 😊
               </Text>
               <Text
                 fontSize={20}
@@ -64,6 +100,24 @@ const HomeScreen = () => {
             </Box>
 
             <MoreInfo />
+            <ThemeInfo />
+
+            <Button
+              backgroundColor={theme.colors.primary}
+              width={100}
+              height={48}
+              borderRadius={22}
+              marginTop={24}
+              justifyContent="center"
+              onPress={handleLogout}>
+              <Text
+                color={theme.colors.text}
+                fontSize={16}
+                fontWeight="bold"
+                textAlign="center">
+                Sair
+              </Text>
+            </Button>
           </Box>
         </ScrollView>
         <ThemeToggleButton />
