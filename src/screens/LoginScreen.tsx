@@ -14,6 +14,7 @@ import LoginForm from '../components/LoginForm';
 import {LoginFormData} from '../components/LoginForm/form.interface';
 import {loginSchema} from '../components/LoginForm/schema';
 import ThemeToggleButton from '../components/ThemeToggleButton';
+import {AuthError, authService} from '../services/auth';
 import {useAppTheme} from '../theme';
 import HomeScreen from './HomeScreen';
 
@@ -28,14 +29,24 @@ const LoginScreen = () => {
     formState: {errors},
   } = useForm({resolver: zodResolver(loginSchema)});
 
-  const onSubmit = (data: LoginFormData) => {
+  const onSubmit = async (data: LoginFormData) => {
+    console.log('📝 Iniciando processo de login');
     setIsLoading(true);
 
-    if (data.email === 'teste@gmail.com' && data.password === '12345') {
-      setIsAuthenticated(true);
+    try {
+      const success = await authService.login(data.email, data.password);
+      if (success) {
+        console.log('✅ Login realizado com sucesso');
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      console.log('❌ Erro no login:', error);
+      if (error instanceof AuthError) {
+        console.log('📋 Detalhes do erro:', error.message);
+      }
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   if (isAuthenticated) {
