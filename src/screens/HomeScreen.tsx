@@ -1,22 +1,20 @@
 import {
   Box,
-  Button,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   Text,
+  View,
 } from '@gluestack-ui/themed';
 import {Platform} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MoreInfo from '../components/MoreInfo';
 import ThemeInfo from '../components/ThemeInfo';
-import ThemeToggleButton from '../components/ThemeToggleButton';
-import {AuthError} from '../services/auth';
+import ThemeToggleButton from '../components/ui/ThemeToggleButton';
 import {useAppTheme} from '../theme';
-import {useAuth} from '../contexts/AuthContext';
 
 const HomeScreen = () => {
   const {theme} = useAppTheme();
-  const {signOut, user} = useAuth();
 
   const today = new Date().toLocaleDateString('pt-BR', {
     weekday: 'long',
@@ -24,20 +22,6 @@ const HomeScreen = () => {
     month: 'long',
     year: 'numeric',
   });
-
-  const handleLogout = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      let errorMessage = 'Erro ao fazer logout. Tente novamente mais tarde.';
-
-      if (error instanceof AuthError) {
-        errorMessage = error.message;
-      }
-
-      console.log('Logout Error', errorMessage);
-    }
-  };
 
   return (
     <SafeAreaView flex={1} backgroundColor={theme.colors.background}>
@@ -55,52 +39,44 @@ const HomeScreen = () => {
             alignItems={'center'}
             backgroundColor={theme.colors.background}
             padding={24}>
-            <Box marginTop={50} marginBottom={32} alignItems={'center'}>
-              <Text
-                fontSize={32}
-                fontWeight={'bold'}
-                color={theme.colors.text}
-                textAlign={'center'}>
-                Olá {user?.name} 😊
-              </Text>
-              <Text
-                fontSize={20}
-                fontWeight={'bold'}
-                color={theme.colors.text}
-                textAlign={'center'}
-                marginTop={8}>
-                Bem-vindo(a) ao app de teste com React Native!
-              </Text>
-              <Text
-                fontSize={16}
-                fontWeight={'bold'}
-                color={theme.colors.text}
-                textAlign={'center'}
-                marginTop={12}
-                opacity={0.7}>
-                Hoje é {today}
-              </Text>
+            <Box width="100%" maxWidth={400} padding={24} marginTop={50}>
+              <View alignItems={'center'} gap={16}>
+                <Icon
+                  name="rocket-launch"
+                  size={48}
+                  color={theme.colors.primary}
+                />
+                <Text
+                  fontSize={24}
+                  fontWeight={'bold'}
+                  color={theme.colors.text}
+                  textAlign={'center'}>
+                  Bem-vindo(a) ao app de teste com React Native!
+                </Text>
+                <View
+                  flexDirection="row"
+                  alignItems="center"
+                  padding={12}
+                  borderRadius={8}
+                  backgroundColor={theme.colors.card}
+                  borderWidth={1}
+                  borderColor={theme.colors.border}>
+                  <Icon name="calendar" size={20} color={theme.colors.text} />
+                  <Text
+                    fontSize={16}
+                    fontWeight={'medium'}
+                    color={theme.colors.text}
+                    opacity={0.8}>
+                    {today}
+                  </Text>
+                </View>
+              </View>
             </Box>
 
-            <MoreInfo />
-            <ThemeInfo />
-
-            <Button
-              backgroundColor={theme.colors.primary}
-              width={100}
-              height={48}
-              borderRadius={22}
-              marginTop={24}
-              justifyContent="center"
-              onPress={handleLogout}>
-              <Text
-                color={theme.colors.text}
-                fontSize={16}
-                fontWeight="bold"
-                textAlign="center">
-                Sair
-              </Text>
-            </Button>
+            <Box marginTop={32}>
+              <MoreInfo />
+              <ThemeInfo />
+            </Box>
           </Box>
         </ScrollView>
         <ThemeToggleButton />

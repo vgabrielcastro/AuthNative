@@ -93,7 +93,9 @@ const LoginForm = ({control, errors, onSubmit, isLoading}: LoginFormProps) => {
                 textAlignVertical="center"
                 placeholderTextColor={theme.colors.placeholder}
               />
-              <Pressable onPress={() => setShowPassword(v => !v)} padding={14}>
+              <Pressable
+                onPress={() => setShowPassword(v => !v)}
+                style={{padding: 8}}>
                 <Icon
                   as={showPassword ? EyeIcon : EyeOffIcon}
                   width={22}
@@ -123,7 +125,7 @@ const LoginForm = ({control, errors, onSubmit, isLoading}: LoginFormProps) => {
           <Spinner color="#fff" />
         ) : (
           <ButtonText
-            color={theme.colors.textButton}
+            color={theme.colors.text}
             fontSize={16}
             fontWeight="bold"
             textAlign="center">

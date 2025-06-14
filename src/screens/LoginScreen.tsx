@@ -7,20 +7,29 @@ import {
   Text,
 } from '@gluestack-ui/themed';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {Platform} from 'react-native';
 import LoginForm from '../components/LoginForm';
 import {LoginFormData} from '../components/LoginForm/form.interface';
 import {loginSchema} from '../components/LoginForm/schema';
-import ThemeToggleButton from '../components/ThemeToggleButton';
+import ThemeToggleButton from '../components/ui/ThemeToggleButton';
+import {useAuth} from '../contexts/AuthContext';
 import {AuthError} from '../services/auth';
 import {useAppTheme} from '../theme';
-import {useAuth} from '../contexts/AuthContext';
+import {RootStackParamList} from '../types/navigation';
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  'Login'
+>;
 
 const LoginScreen = () => {
   const {theme} = useAppTheme();
   const {signIn} = useAuth();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -36,6 +45,7 @@ const LoginScreen = () => {
     try {
       await signIn(data.email, data.password);
       console.log('✅ Login realizado com sucesso');
+      navigation.replace('Main');
     } catch (error) {
       console.log('❌ Erro no login:', error);
       if (error instanceof AuthError) {

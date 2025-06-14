@@ -1,97 +1,253 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Auth Native
 
-# Getting Started
+Um aplicativo de demonstração de autenticação em React Native, utilizando as melhores práticas de desenvolvimento e uma arquitetura moderna.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🚀 Tecnologias
 
-## Step 1: Start Metro
+- React Native
+- TypeScript
+- React Navigation
+- Gluestack UI
+- AsyncStorage
+- Axios
+- React Hook Form
+- Zustand
+- Zod
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 📋 Pré-requisitos
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- Node.js (versão 14 ou superior)
+- npm ou yarn
+- React Native CLI
+- Android Studio (para desenvolvimento Android)
+- Xcode (para desenvolvimento iOS - apenas macOS)
 
-```sh
-# Using npm
+## 🔧 Instalação
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/vgabrielcastro/AuthNative
+cd AuthNative
+```
+
+2. Instale as dependências:
+
+```bash
+npm install
+# ou
+yarn install
+```
+
+3. Instale as dependências do iOS (apenas macOS):
+
+```bash
+cd ios && pod install && cd ..
+```
+
+4. Inicie o servidor de desenvolvimento:
+
+```bash
 npm start
-
-# OR using Yarn
+# ou
 yarn start
 ```
 
-## Step 2: Build and run your app
+5. Em outro terminal, inicie o json-server para simular a API:
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+```bash
+npm run server
+# ou
+yarn server
+```
 
-### Android
+6. Execute o aplicativo:
 
-```sh
-# Using npm
+```bash
+# Para Android
 npm run android
-
-# OR using Yarn
+# ou
 yarn android
-```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+# Para iOS (apenas macOS)
 npm run ios
-
-# OR using Yarn
+# ou
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 🔍 Debug e Logs
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+Para visualizar os logs do aplicativo:
 
-## Step 3: Modify your app
+```bash
+# Usando npm
+npm run log-android  # Para Android
+npm run log-ios     # Para iOS (apenas macOS)
 
-Now that you have successfully run the app, let's make changes!
+# Usando yarn
+yarn log-android    # Para Android
+yarn log-ios        # Para iOS (apenas macOS)
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+Os logs incluem:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+- Informações de autenticação
+- Erros e exceções
+- Estado da aplicação
+- Interações do usuário
+- Requisições à API
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🎯 Funcionalidades
 
-## Congratulations! :tada:
+- **Autenticação**
 
-You've successfully run and modified your React Native App. :partying_face:
+  - Login com email e senha
+  - Persistência de sessão
+  - Logout
+  - Validação de formulários
 
-### Now what?
+- **Tema**
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+  - Suporte a tema claro/escuro
+  - Adaptação automática ao tema do sistema
+  - Cores e estilos consistentes
 
-# Troubleshooting
+- **Navegação**
+  - Navegação entre telas
+  - Proteção de rotas
+  - Transições suaves
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## 📱 Telas
 
-# Learn More
+### Login
 
-To learn more about React Native, take a look at the following resources:
+- Formulário de login com validação
+- Feedback visual de erros
+- Persistência de dados
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+### Home
+
+- Boas-vindas personalizadas
+- Informações do usuário
+- Botão de logout
+- Informações sobre o tema
+
+## 🔐 Credenciais de Teste
+
+Para testar o aplicativo, use as seguintes credenciais:
+
+```
+Email: teste@teste.com
+Senha: 123456
+```
+
+### Adicionando Novos Usuários
+
+Você pode adicionar mais usuários editando o arquivo `db.json`. O formato para cada usuário deve ser:
+
+```json
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Nome do Usuário",
+      "email": "email@exemplo.com",
+      "password": "senha123"
+    }
+  ]
+}
+```
+
+Para adicionar um novo usuário:
+
+1. Abra o arquivo `db.json`
+2. Adicione um novo objeto dentro do array `users`
+3. Reinicie o servidor com `npm run server` ou `yarn server`
+
+## 🏗️ Estrutura do Projeto
+
+```
+src/
+  ├── components/     # Componentes reutilizáveis
+  ├── contexts/       # Contextos (Auth, Theme)
+  ├── routes/         # Configuração de navegação
+  ├── screens/        # Telas do aplicativo
+  ├── services/       # Serviços (API, Auth)
+  ├── store/          # Gerenciamento de estado
+  ├── theme/          # Configuração de tema
+  └── types/          # Definições de tipos
+```
+
+## 📱 Código Nativo
+
+O projeto inclui código nativo tanto para Android quanto para iOS, permitindo:
+
+### Android
+
+- Acesso a recursos nativos do dispositivo
+- Configurações específicas do Android
+- Permissões nativas
+- Integração com serviços do Android
+
+### iOS
+
+- Configurações específicas do iOS
+- Capacidades nativas do iOS
+- Integração com serviços do iOS
+- Configurações de segurança
+
+Para acessar o código nativo:
+
+- Android: `android/` - Contém o projeto Android Studio
+- iOS: `ios/` - Contém o projeto Xcode
+
+## 🔄 Fluxo de Autenticação
+
+1. **Login**
+
+   - Usuário insere credenciais
+   - Validação dos campos
+   - Chamada à API
+   - Armazenamento do token
+   - Redirecionamento para Home
+
+2. **Persistência**
+
+   - Verificação de token ao iniciar
+   - Redirecionamento automático
+   - Manutenção da sessão
+
+3. **Logout**
+   - Remoção do token
+   - Limpeza do estado
+   - Redirecionamento para Login
+
+## 🎨 Tema
+
+O aplicativo utiliza o Gluestack UI para estilização, oferecendo:
+
+- Design system consistente
+- Suporte a temas
+- Componentes acessíveis
+- Estilos responsivos
+
+## 📦 Dependências Principais
+
+- `@gluestack-ui/themed`: UI components
+- `@react-navigation/native`: Navegação
+- `@react-native-async-storage/async-storage`: Armazenamento local
+- `axios`: Cliente HTTP
+- `react-hook-form`: Gerenciamento de formulários
+- `zod`: Validação de dados
+
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.

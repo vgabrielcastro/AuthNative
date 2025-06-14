@@ -1,15 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserData } from '../types/user.data.interface';
 import api from './api';
 
 const AUTH_TOKEN_KEY = '@auth_token';
 const USER_DATA_KEY = '@user_data';
-
-interface UserData {
-  id: number;
-  email: string;
-  name: string;
-  password: string;
-}
 
 export class AuthError extends Error {
   constructor(message: string) {
@@ -39,7 +33,6 @@ export const authService = {
       logInfo('Resposta da API recebida', response.data);
 
       const user = response.data[0];
-      logInfo('Usuário encontrado', user ? 'Sim' : 'Não');
 
       if (!user) {
         logError('Usuário não encontrado');
